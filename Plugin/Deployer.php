@@ -1,10 +1,10 @@
 <?php
-namespace UpAssist\Deployer\Plugin;
+namespace UpAssist\PHPCI\Deployer\Plugin;
 
 
 use PHPCI\Builder;
 use PHPCI\Model\Build;
-use UpAssist\Deployer\Utility\GitUtility;
+use UpAssist\PHPCI\Deployer\Utility\GitUtility;
 
 /**
  * Class Deployer

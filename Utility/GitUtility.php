@@ -1,5 +1,5 @@
 <?php
-namespace UpAssist\Deployer\Utility;
+namespace UpAssist\PHPCI\Deployer\Utility;
 
 /**
  * Class GitUtility

@@ -1,17 +1,14 @@
 {
-  "name": "upassist/deployer",
+  "name": "upassist/phpci-deployer",
   "authors": [
     {
       "name": "Henjo Hoeksma",
       "email": "henjo@upassist.com"
     }
   ],
-  "require": {
-    "symfony/yaml": "^2.7"
-  },
   "autoload": {
     "psr-4": {
-      "UpAssist\\Deployer\\": ""
+      "UpAssist\\PHPCI\\Deployer\\": ""
     }
   }
 }
