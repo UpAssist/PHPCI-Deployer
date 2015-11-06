@@ -44,7 +44,7 @@ class Deployer implements Plugin
      * @param Build $build
      * @param array $options
      */
-    public function __construct(Builder $phpci, Build $build, $options = [])
+    public function __construct(Builder $phpci, Build $build, array $options = [])
     {
         $this->phpci = $phpci;
         $this->build = $build;
