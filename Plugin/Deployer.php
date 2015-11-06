@@ -1,16 +1,22 @@
 <?php
 namespace UpAssist\PHPCI\Deployer\Plugin;
 
-
 use PHPCI\Builder;
 use PHPCI\Model\Build;
+use PHPCI\Plugin;
 use UpAssist\PHPCI\Deployer\Utility\GitUtility;
 
 /**
  * Class Deployer
- * @package UpAssist\Deployer\Plugin
+ *
+ * @category Class
+ * @package UpAssist\PHPCI\Deployer
+ * @author Henjo Hoeksma <henjo@upassist.com>
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @link http://www.upassist.com
  */
-class Deployer implements \PHPCI\Plugin {
+class Deployer implements Plugin
+{
 
     /**
      * @var \PHPCI\Builder
@@ -22,8 +28,14 @@ class Deployer implements \PHPCI\Plugin {
      */
     protected $build;
 
+    /**
+     * @var array
+     */
     protected $options = [];
 
+    /**
+     * @var string
+     */
     protected $currentBranch;
 
     /**
@@ -32,12 +44,12 @@ class Deployer implements \PHPCI\Plugin {
      * @param Build $build
      * @param array $options
      */
-    public function __construct(Builder $phpci, Build $build, array $options = array())
+    public function __construct(Builder $phpci, Build $build, $options = [])
     {
         $this->phpci = $phpci;
         $this->build = $build;
 
-        if(!empty($options)) {
+        if (!empty($options)) {
             $this->options = $options;
         }
 
@@ -45,6 +57,11 @@ class Deployer implements \PHPCI\Plugin {
 
     }
 
+    /**
+     *
+     * @return bool|null
+     * @throws \Exception
+     */
     public function execute()
     {
         // No configuration found
@@ -53,7 +70,7 @@ class Deployer implements \PHPCI\Plugin {
         }
 
         /** @var array $branchConfiguration */
-        $branchConfiguration = $this->getConfigurationForCurrentBranch();
+        $branchConfiguration = $this->_getConfigurationForCurrentBranch();
 
         // Current Branch does not exist in the configuration, silently ignore
         if ($branchConfiguration === null) {
@@ -62,15 +79,17 @@ class Deployer implements \PHPCI\Plugin {
 
         // Copy the deploy.php if set
         if (isset($this->options['deployFile'])) {
-            if($this->phpci->executeCommand('cp ' . $this->options['deployFile'] . ' ' . $this->build->currentBuildPath . '/deploy.php')) {
+            if ($this->phpci->executeCommand(
+                'cp ' . $this->options['deployFile'] . ' ' .
+                $this->build->currentBuildPath . '/deploy.php')) {
                 $this->phpci->log('Copied the deploy file successfully.');
             }
         }
 
         // Validate the yaml configuration and if correct: deploy
-        if ($this->validateDeployerOptions($branchConfiguration)) {
+        if ($this->_validateDeployerOptions($branchConfiguration)) {
             // Lets deploy...
-            $env  = 'STAGE=' . $branchConfiguration['stage'] . ' ';
+            $env = 'STAGE=' . $branchConfiguration['stage'] . ' ';
             $env .= 'SERVER=' . $branchConfiguration['server'] . ' ';
             $env .= 'USER=' . $branchConfiguration['user'] . ' ';
             $env .= 'DEPLOY_PATH=' . $branchConfiguration['deploy_path'] . ' ';
@@ -85,7 +104,8 @@ class Deployer implements \PHPCI\Plugin {
                 if ($this->phpci->executeCommand($command)) {
                     $success = true;
                 } else {
-                    $this->phpci->logFailure('Something went wrong at the deployer part.' . PHP_EOL . 'The following command was used:' . PHP_EOL . $command);
+                    $this->phpci->logFailure('Something went wrong at the deployer part.' . PHP_EOL .
+                        'The following command was used:' . PHP_EOL . $command);
                     $success = false;
                 }
             } catch (\Exception $e) {
@@ -103,7 +123,7 @@ class Deployer implements \PHPCI\Plugin {
     /**
      * @return array
      */
-    private function getConfigurationForCurrentBranch()
+    private function _getConfigurationForCurrentBranch()
     {
         if (isset($this->options[$this->currentBranch])) {
             $branchConfiguration = $this->options[$this->currentBranch];
@@ -115,7 +135,8 @@ class Deployer implements \PHPCI\Plugin {
             // Set some defaults
             $branchConfiguration['branch'] = $this->currentBranch;
             // If stage is not set, we fall back to the branch name
-            $branchConfiguration['stage'] = isset($branchConfiguration['stage']) ? $branchConfiguration['stage'] : $this->currentBranch;
+            $branchConfiguration['stage'] = isset($branchConfiguration['stage']) ?
+                $branchConfiguration['stage'] : $this->currentBranch;
             return $branchConfiguration;
         }
 
@@ -127,10 +148,10 @@ class Deployer implements \PHPCI\Plugin {
      * @return bool
      * @throws \Exception
      */
-    private function validateDeployerOptions($configuration = [])
+    private function _validateDeployerOptions($configuration = [])
     {
         if (empty($configuration)) {
-            $configuration = $this->getConfigurationForCurrentBranch();
+            $configuration = $this->_getConfigurationForCurrentBranch();
         }
 
         if (empty($configuration['repository'])) {

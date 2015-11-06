@@ -3,7 +3,12 @@ namespace UpAssist\PHPCI\Deployer\Utility;
 
 /**
  * Class GitUtility
- * @package UpAssist\Deployer\Utility
+ *
+ * @category Class
+ * @package UpAssist\PHPCI\Deployer
+ * @author Henjo Hoeksma <henjo@upassist.com>
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @link http://www.upassist.com
  */
 class GitUtility
 {
@@ -21,5 +26,7 @@ class GitUtility
                 return $gitInfo[1];
             }
         }
+
+        return null;
     }
 }
