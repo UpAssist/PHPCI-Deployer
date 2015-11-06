@@ -1,0 +1,17 @@
+{
+  "name": "upassist/deployer",
+  "authors": [
+    {
+      "name": "Henjo Hoeksma",
+      "email": "henjo@upassist.com"
+    }
+  ],
+  "require": {
+    "symfony/yaml": "^2.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "UpAssist\\Deployer\\": ""
+    }
+  }
+}
