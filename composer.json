@@ -1,6 +1,7 @@
 {
   "name": "upassist/phpci-deployer",
   "description": "A deployer (http://deployer.org) plugin for PHPCI",
+  "license": "http://www.gnu.org/copyleft/gpl.html GNU General Public License",
   "authors": [
     {
       "name": "Henjo Hoeksma",
