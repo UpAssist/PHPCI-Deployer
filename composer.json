@@ -12,5 +12,16 @@
     "psr-4": {
       "UpAssist\\PHPCI\\Deployer\\": ""
     }
+  },
+  "extra": {
+    "phpci": {
+      "pluginNamespace": "UpAssist\\PHPCI\\Deployer\\Plugin",
+      "suppliedPlugins": [
+        {
+          "name": "PhpDeployer",
+          "class": "Deployer"
+        }
+      ]
+    }
   }
 }
